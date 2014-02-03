@@ -11,6 +11,9 @@ Source1:	apache.conf
 Source2:	lighttpd.conf
 URL:		https://code.google.com/p/explorercanvas/
 BuildRequires:	unzip
+Requires:	webapps
+Requires:	webserver(access)
+Requires:	webserver(alias)
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
