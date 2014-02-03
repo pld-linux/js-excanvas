@@ -1,15 +1,21 @@
 %define		pkgname	excanvas
+# manually looked date from commit id
+%define		gitdate	20131113
+%define		rel		1
 Summary:	HTML5 Canvas for Internet Explorer
 Name:		js-%{pkgname}
 Version:	3
-Release:	1
+Release:	%{rel}.%{gitdate}
 License:	Apache v2.0
 Group:		Applications/WWW
-Source0:	https://explorercanvas.googlecode.com/files/excanvas_r%{version}.zip
-# Source0-md5:	81a041b98c477f92ed772f2fac0835ad
+#Source0:	https://explorercanvas.googlecode.com/files/excanvas_r%{version}.zip
+Source0:	https://explorercanvas.googlecode.com/archive/1735174401034391aa632957b17ce4a167613a83.zip
+# Source0-md5:	28fb308898a9c4367f08e59e0adc0cc9
 Source1:	apache.conf
 Source2:	lighttpd.conf
 URL:		https://code.google.com/p/explorercanvas/
+BuildRequires:	closure-compiler
+BuildRequires:	js
 BuildRequires:	unzip
 Requires:	webapps
 Requires:	webserver(access)
@@ -40,12 +46,30 @@ Demonstrations and samples for %{pkgname}.
 
 %prep
 %setup -qc
+mv explorercanvas-*/* .
+
+# avoid Dec 31 1979 syndrome
+touch -r %{SOURCE0} README COPYING AUTHORS *.js
+
+%build
+install -d build
+
+# compress .js
+for js in *.js; do
+	out=build/${js#*/}
+%if 0%{!?debug:1}
+	closure-compiler --js $js --charset UTF-8 --js_output_file $out
+	js -C -f $out
+%else
+	cp -p $js $out
+%endif
+done
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_appdir},%{_examplesdir}/%{name}-%{version}}
 
-cp -p %{pkgname}.compiled.js $RPM_BUILD_ROOT%{_appdir}/%{pkgname}-%{version}.min.js
+cp -p build/%{pkgname}.js $RPM_BUILD_ROOT%{_appdir}/%{pkgname}-%{version}.min.js
 ln -s %{pkgname}-%{version}.min.js $RPM_BUILD_ROOT%{_appdir}/%{pkgname}.js
 cp -p %{pkgname}.js $RPM_BUILD_ROOT%{_appdir}/%{pkgname}-%{version}.src.js
 ln -s %{pkgname}-%{version}.src.js $RPM_BUILD_ROOT%{_appdir}/%{pkgname}.src.js
