@@ -9,8 +9,9 @@ Release:	%{rel}.%{gitdate}
 License:	Apache v2.0
 Group:		Applications/WWW
 #Source0:	https://explorercanvas.googlecode.com/files/excanvas_r%{version}.zip
-Source0:	https://explorercanvas.googlecode.com/archive/1735174401034391aa632957b17ce4a167613a83.zip
-# Source0-md5:	28fb308898a9c4367f08e59e0adc0cc9
+#Source0Download:	https://explorercanvas.googlecode.com/archive/1735174401034391aa632957b17ce4a167613a83.zip
+Source0:	1735174401034391aa632957b17ce4a167613a83.zip
+# Source0-md5:	fb64ba31d6bc93d1b90a0aca46e0e2be
 Source1:	apache.conf
 Source2:	lighttpd.conf
 URL:		https://code.google.com/p/explorercanvas/
