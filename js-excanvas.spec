@@ -1,7 +1,7 @@
 %define		pkgname	excanvas
 # manually looked date from commit id
 %define		gitdate	20131113
-%define		rel		1
+%define		rel		2
 Summary:	HTML5 Canvas for Internet Explorer
 Name:		js-%{pkgname}
 Version:	3
